@@ -1,24 +1,24 @@
-## CHAT SERVER WITH MONGODB
+# CHAT SERVER WITH MONGODB
 Node.js & Express - base.
 Socket.io - simple chat with client that automatically loads.
 MongoDB connection - simple noSQL database.
 Automatically runs html on start.
 Sample for BTH - Blekinge Technical Institute.
 
-# Requirements 
+## Requirements 
 - Installed MongoDB in the environment, running. 
   Database: chatBTH, collection: crowd
 - Node
 - Install packages with npm install.
 
-# Placement
+## Placement
 Main logic    - app.js
               - routes/chatDb.js
 MongoDB tests - src/
 Html          - chatHistory.html
               - index.html
 
-# Install & run with Node Package Manager:
+## Install & run with Node Package Manager:
 Install
 -- npm install 
 
@@ -34,15 +34,15 @@ In the browser see:
 - /chat     : json output of chat history
 - /chat/gui : html output of the chat history 
 
-# Run & install with Node Package Manager:
+## Run & install with Node Package Manager:
 Eslint:
 -- npm run eslint
 
-# Port
+## Port
 Default it runs on port 3001 (in local environment: http://localhost:3001). 
 Update in app.js, bottom.
 
-# Run & test MongoDB:
+## Run & test MongoDB:
 Default set up with a MongoDb (https://www.mongodb.com/)
   database : chatBTH
   collection: crowd (default)
