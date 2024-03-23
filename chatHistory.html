@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Socket.IO chat | DEMO</title>
+    <style>
+        
+      html { background-color: black; color: white; font-size: 1.5em; }
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      a {color: orange; text-transform: uppercase; text-decoration:none; text-align: right}
+      a:visited {color: orange;}
+      h1 {text-align: center}
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { background: #767373; padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #686464; }
+      
+      table {
+        margin: 0 auto; 
+        width: 100%; 
+        /* max-width: 500px; */
+        border-collapse: collapse;
+        width: 100%;
+     }
+      tr {
+        background-color: white;
+        border: 1px solid #d4cdcd;
+        padding: 8px;
+        color: black;
+      }
+      tr:nth-child(even){background-color: #f2f2f2;}
+      tr:hover {background-color: #ddd;}
+
+      th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    </style>
+</head>
+<body>  
+    <a href="/"> Chat ></a>
+    <h1> Chat history </h1>
+    <div id="chatHistory"></div>
+
+
+    <script>
+
+        // AJAX
+        function loadHistory(cFunction) {
+        var xhttp;
+        url = 'http://localhost:3001/chat/list';
+
+        xhttp=new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                cFunction(this);
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+        }
+
+        // CALLBACK
+        function callBackF(xhttp) {
+        // document.getElementById("demo").innerHTML =
+        // xhttp.responseText;
+        console.log(xhttp.responseText);
+        if (!xhttp.responseText) {
+            return false;
+        }
+
+        // Load and print text
+        const json = '{"result":true, "count":42}';
+        const obj = JSON.parse(json);
+        document.getElementById("chatHistory").innerHTML = obj;
+
+        const commentArr = JSON.parse(xhttp.responseText);
+        console.log(commentArr);
+
+        let text = "<table border='1'>";
+        for (let x in commentArr) {
+            text += "<tr><td>" + commentArr[x].comment + "</td></tr>";
+        }
+        text += "</table>";    
+        document.getElementById("chatHistory").innerHTML = text;
+        }
+
+        loadHistory(callBackF);
+        
+    </script>
+</body>
+</html>

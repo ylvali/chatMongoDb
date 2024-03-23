@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Socket.IO chat | DEMO</title>
+    <style>
+        
+      html { background-color: black; color: white; font-size: 1.5em; }
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      a {color: orange; text-transform: uppercase; text-decoration:none; text-align: right}
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+      a:visited {color: orange;}
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { background: #767373; padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #686464; }
+
+    </style>
+</head>
+<body>
+    <a href="/chat/gui"> Chat history > </a>
+
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+    <p id="chatName"></p>
+
+    <script src="./socket.io/socket.io.js"></script>
+
+    <script>
+        let socket = io('http://localhost:3001');
+        
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+        let person; //  The name of the person
+        person = '';
+        
+        // Send the message 
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input.value) {
+            let msg = person + " : " + input.value;
+            socket.emit('chat message', msg);
+            input.value = '';
+            }
+        });
+
+        // Receive the message
+        socket.on('chat message', (msg) => {
+            let item = document.createElement('li');
+            item.textContent = msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+
+        // New user
+        socket.on('user connected', (msg) => {
+            let item = document.createElement('li');
+            item.textContent = msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+
+
+        // Function for asking the name
+        function askTheName() {
+            let text;
+            person = prompt("Please enter your name:", "BladeRunner");
+            if (person == null || person == "") {
+                text = "User cancelled the prompt.";
+            } else {
+                text = "Chat of: " + person;
+            }
+
+            // Welcome text
+            let item = document.createElement('li');
+            item.textContent = "Welcome "+person;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+
+            document.getElementById("chatName").innerHTML = text;
+        }
+        askTheName();
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+language: node_js
+
+node_js:
+    - "16"
+
+sudo: required
+
+git:
+    submodules: false
+
+dist: xenial
+services:
+  - xvfb
+
+before_script:
+    - npm install  #install packages
+
+script:
+    - npm start
